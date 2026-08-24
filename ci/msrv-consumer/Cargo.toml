@@ -1,0 +1,10 @@
+[package]
+name = "msrv-consumer"
+version = "0.0.0"
+edition = "2021"
+rust-version = "1.70"
+publish = false
+description = "External consumer built on the MSRV toolchain in CI"
+
+[dependencies]
+y4m-codec = { path = "../.." }

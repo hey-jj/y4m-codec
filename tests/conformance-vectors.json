@@ -1,0 +1,921 @@
+{
+  "format": "YUV4MPEG2",
+  "frozen": true,
+  "generator": "deterministic fixture generator (no RNG)",
+  "sample_byte_order_gt8bit": "little-endian, value in low `depth` bits",
+  "roundtrip_contract": "decode then re-encode with preserved raw header/frame params reproduces the file byte-for-byte",
+  "vectors": [
+    {
+      "file": "fixtures/c420_8bit_4x4_2f.y4m",
+      "kind": "valid",
+      "description": "Baseline 4:2:0 8-bit, NTSC framerate, full canonical header, 2 frames",
+      "header_bytes": "YUV4MPEG2 W4 H4 F30000:1001 Ip A1:1 C420\n",
+      "expect": {
+        "width": 4,
+        "height": 4,
+        "colorspace": "C420",
+        "bit_depth": 8,
+        "bytes_per_sample": 1,
+        "plane_sizes_bytes": [
+          16,
+          4,
+          4
+        ],
+        "plane_dims_samples": [
+          [
+            4,
+            4
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "frames": 2
+      },
+      "payload_first_bytes_hex": "00070e151c232a31",
+      "sha256": "c15649b99701a141d3490b185d22535a9981077344765bf3b48156edda81d818",
+      "size_bytes": 101,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/c422_8bit_4x4_1f.y4m",
+      "kind": "valid",
+      "description": "4:2:2 8-bit even dims",
+      "header_bytes": "YUV4MPEG2 W4 H4 F25:1 Ip A1:1 C422\n",
+      "expect": {
+        "width": 4,
+        "height": 4,
+        "colorspace": "C422",
+        "bit_depth": 8,
+        "bytes_per_sample": 1,
+        "plane_sizes_bytes": [
+          16,
+          8,
+          8
+        ],
+        "plane_dims_samples": [
+          [
+            4,
+            4
+          ],
+          [
+            2,
+            4
+          ],
+          [
+            2,
+            4
+          ]
+        ],
+        "frames": 1
+      },
+      "payload_first_bytes_hex": "00070e151c232a31",
+      "sha256": "38b1038e1e4f2113433b54700aa2c7f230341b3a318d7e34f42dd2f7dcabb967",
+      "size_bytes": 73,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/c444_8bit_2x2_3f.y4m",
+      "kind": "valid",
+      "description": "4:4:4 8-bit, 3 frames back-to-back",
+      "header_bytes": "YUV4MPEG2 W2 H2 F24:1 Ip A1:1 C444\n",
+      "expect": {
+        "width": 2,
+        "height": 2,
+        "colorspace": "C444",
+        "bit_depth": 8,
+        "bytes_per_sample": 1,
+        "plane_sizes_bytes": [
+          4,
+          4,
+          4
+        ],
+        "plane_dims_samples": [
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "frames": 3
+      },
+      "payload_first_bytes_hex": "00070e15",
+      "sha256": "649062cd7c9ba2a21ff0a4f6d2ae966310136b49085c9c80c55a2faadffccc90",
+      "size_bytes": 89,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/mono_8bit_5x3_1f.y4m",
+      "kind": "valid",
+      "description": "Grayscale, odd width, unknown pixel aspect A0:0, U/V planes absent",
+      "header_bytes": "YUV4MPEG2 W5 H3 F30:1 Ip A0:0 Cmono\n",
+      "expect": {
+        "width": 5,
+        "height": 3,
+        "colorspace": "Cmono",
+        "bit_depth": 8,
+        "bytes_per_sample": 1,
+        "plane_sizes_bytes": [
+          15,
+          0,
+          0
+        ],
+        "plane_dims_samples": [
+          [
+            5,
+            3
+          ]
+        ],
+        "frames": 1
+      },
+      "payload_first_bytes_hex": "00070e151c232a31",
+      "sha256": "ce788b1f8c2d453e93a6b5813b029a0177c432c00df0a0253000e91426098259",
+      "size_bytes": 57,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/c420p10_2x2_2f_LE.y4m",
+      "kind": "valid",
+      "description": "THE BIG-ENDIAN KILLER: 10-bit 4:2:0; first Y samples pinned to 0x0001,0x0201,0x03FF,0x0100 -> wire bytes 01 00 01 02 ff 03 00 01 (little-endian). A from_u16 writer emitting host byte order produces 00 01 02 01 03 ff 01 00 on big-endian hosts.",
+      "header_bytes": "YUV4MPEG2 W2 H2 F25:1 Ip A1:1 C420p10\n",
+      "expect": {
+        "width": 2,
+        "height": 2,
+        "colorspace": "C420p10",
+        "bit_depth": 10,
+        "bytes_per_sample": 2,
+        "plane_sizes_bytes": [
+          8,
+          2,
+          2
+        ],
+        "plane_dims_samples": [
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "frames": 2
+      },
+      "payload_first_bytes_hex": "01000102ff030001",
+      "sha256": "22f6c252195089baaf5a856f4ece79fb9a977c6ea215fc27002a75235acb4a1e",
+      "size_bytes": 74,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/c420p12_2x2_1f_LE.y4m",
+      "kind": "valid",
+      "description": "12-bit 4:2:0; pinned samples incl. 0x0FFF max",
+      "header_bytes": "YUV4MPEG2 W2 H2 F25:1 Ip A1:1 C420p12\n",
+      "expect": {
+        "width": 2,
+        "height": 2,
+        "colorspace": "C420p12",
+        "bit_depth": 12,
+        "bytes_per_sample": 2,
+        "plane_sizes_bytes": [
+          8,
+          2,
+          2
+        ],
+        "plane_dims_samples": [
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "frames": 1
+      },
+      "payload_first_bytes_hex": "01000102ff0f0001",
+      "sha256": "1a82a4887686c22e16ac40af7184fce3a5e1ddfe5f855d96fdb9fe41cc29fc9c",
+      "size_bytes": 56,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/c422p10_3x2_1f_oddw.y4m",
+      "kind": "valid",
+      "description": "10-bit 4:2:2 odd width: chroma width ceil(3/2)=2",
+      "header_bytes": "YUV4MPEG2 W3 H2 F25:1 Ip A1:1 C422p10\n",
+      "expect": {
+        "width": 3,
+        "height": 2,
+        "colorspace": "C422p10",
+        "bit_depth": 10,
+        "bytes_per_sample": 2,
+        "plane_sizes_bytes": [
+          12,
+          8,
+          8
+        ],
+        "plane_dims_samples": [
+          [
+            3,
+            2
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "frames": 1
+      },
+      "payload_first_bytes_hex": "01000102ff030001",
+      "sha256": "2db49e725f4bf01481c60cd5fa9c79ded77cb444b79421729c667ccaebd3e60d",
+      "size_bytes": 72,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/c444p12_2x1_1f.y4m",
+      "kind": "valid",
+      "description": "12-bit 4:4:4, height 1",
+      "header_bytes": "YUV4MPEG2 W2 H1 F60:1 Ip A1:1 C444p12\n",
+      "expect": {
+        "width": 2,
+        "height": 1,
+        "colorspace": "C444p12",
+        "bit_depth": 12,
+        "bytes_per_sample": 2,
+        "plane_sizes_bytes": [
+          4,
+          4,
+          4
+        ],
+        "plane_dims_samples": [
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ],
+          [
+            2,
+            1
+          ]
+        ],
+        "frames": 1
+      },
+      "payload_first_bytes_hex": "01000102",
+      "sha256": "9af883a91f2c1b53fbb8721896ab3be60fea0c12b4594e7f03457d145382e7ba",
+      "size_bytes": 56,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/mono12_3x3_1f.y4m",
+      "kind": "valid",
+      "description": "12-bit grayscale",
+      "header_bytes": "YUV4MPEG2 W3 H3 F25:1 Ip A1:1 Cmono12\n",
+      "expect": {
+        "width": 3,
+        "height": 3,
+        "colorspace": "Cmono12",
+        "bit_depth": 12,
+        "bytes_per_sample": 2,
+        "plane_sizes_bytes": [
+          18,
+          0,
+          0
+        ],
+        "plane_dims_samples": [
+          [
+            3,
+            3
+          ]
+        ],
+        "frames": 1
+      },
+      "payload_first_bytes_hex": "01000102ff0f0001",
+      "sha256": "a354cf8d2c16bc7b76e1242b0840bf74078045aed45fcebbd9418b2a43d1502e",
+      "size_bytes": 62,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/c420p16_2x2_1f.y4m",
+      "kind": "valid",
+      "description": "16-bit 4:2:0 (ffmpeg 'C420p16' depth-extension tag)",
+      "header_bytes": "YUV4MPEG2 W2 H2 F25:1 Ip A1:1 C420p16\n",
+      "expect": {
+        "width": 2,
+        "height": 2,
+        "colorspace": "C420p16",
+        "bit_depth": 16,
+        "bytes_per_sample": 2,
+        "plane_sizes_bytes": [
+          8,
+          2,
+          2
+        ],
+        "plane_dims_samples": [
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "frames": 1
+      },
+      "payload_first_bytes_hex": "01000102ffff0001",
+      "sha256": "51eda0234b44f22d515c3e0e8edbfaee1586866d916f3012b5b816aa09d00b0a",
+      "size_bytes": 56,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/c420_odd_5x5_1f.y4m",
+      "kind": "valid",
+      "description": "Odd 5x5 4:2:0, ceil chroma 3x3 (ceil convention; ffmpeg refuses odd 4:2:0 -- read-side acceptance vector only)",
+      "header_bytes": "YUV4MPEG2 W5 H5 F25:1 Ip A1:1 C420\n",
+      "expect": {
+        "width": 5,
+        "height": 5,
+        "colorspace": "C420",
+        "bit_depth": 8,
+        "bytes_per_sample": 1,
+        "plane_sizes_bytes": [
+          25,
+          9,
+          9
+        ],
+        "plane_dims_samples": [
+          [
+            5,
+            5
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            3,
+            3
+          ]
+        ],
+        "frames": 1
+      },
+      "payload_first_bytes_hex": "00070e151c232a31",
+      "sha256": "99db4e0cb4a6ef01ca088a9fffa10f1a10091b72723fcb6e220c475785a3c35f",
+      "size_bytes": 84,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/minimal_header_whf.y4m",
+      "kind": "valid",
+      "description": "No C/I/A tags: colorspace defaults to 4:2:0 8-bit layout, interlace unspecified->progressive, aspect unspecified->0:0. Round-trip must not invent tags.",
+      "header_bytes": "YUV4MPEG2 W2 H2 F25:1\n",
+      "expect": {
+        "width": 2,
+        "height": 2,
+        "colorspace": "C420",
+        "bit_depth": 8,
+        "bytes_per_sample": 1,
+        "plane_sizes_bytes": [
+          4,
+          1,
+          1
+        ],
+        "plane_dims_samples": [
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "frames": 1
+      },
+      "payload_first_bytes_hex": "00070e15",
+      "sha256": "e76d8af174706ca5719e54d37e7ab7776fd019dce90f3ca442453226b510a79c",
+      "size_bytes": 34,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/interlace_variants_tff.y4m",
+      "kind": "valid",
+      "description": "It top-field-first; layout identical to progressive",
+      "header_bytes": "YUV4MPEG2 W2 H2 F25:1 It A1:1 C420\n",
+      "expect": {
+        "width": 2,
+        "height": 2,
+        "colorspace": "C420",
+        "bit_depth": 8,
+        "bytes_per_sample": 1,
+        "plane_sizes_bytes": [
+          4,
+          1,
+          1
+        ],
+        "plane_dims_samples": [
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "frames": 1
+      },
+      "payload_first_bytes_hex": "00070e15",
+      "sha256": "dccb73ca0dcafc41070985d3cd22501a977e4b7d0d4cbfcd39e1a25ca6330f50",
+      "size_bytes": 47,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/c420jpeg_sited_2x2.y4m",
+      "kind": "valid",
+      "description": "Chroma-siting variant tag; sizes identical to C420",
+      "header_bytes": "YUV4MPEG2 W2 H2 F25:1 Ip A1:1 C420jpeg\n",
+      "expect": {
+        "width": 2,
+        "height": 2,
+        "colorspace": "C420jpeg",
+        "bit_depth": 8,
+        "bytes_per_sample": 1,
+        "plane_sizes_bytes": [
+          4,
+          1,
+          1
+        ],
+        "plane_dims_samples": [
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "frames": 1
+      },
+      "payload_first_bytes_hex": "00070e15",
+      "sha256": "2b10bc8b4da3ecf8fdcd58be1fe9573e9f3c2d6fb401a7286f48d32c0b8cd51e",
+      "size_bytes": 51,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/c420mpeg2_sited_2x2.y4m",
+      "kind": "valid",
+      "description": "Chroma-siting variant tag; sizes identical to C420",
+      "header_bytes": "YUV4MPEG2 W2 H2 F25:1 Ip A1:1 C420mpeg2\n",
+      "expect": {
+        "width": 2,
+        "height": 2,
+        "colorspace": "C420mpeg2",
+        "bit_depth": 8,
+        "bytes_per_sample": 1,
+        "plane_sizes_bytes": [
+          4,
+          1,
+          1
+        ],
+        "plane_dims_samples": [
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "frames": 1
+      },
+      "payload_first_bytes_hex": "00070e15",
+      "sha256": "7c42ae125de93f2bbf5eb87f2fc21f0839be1d2d7b8e4d273a5014b8950cb0b7",
+      "size_bytes": 52,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/xparams_stream_2x2.y4m",
+      "kind": "valid",
+      "description": "Two X vendor extensions in stream header, must be preserved verbatim",
+      "header_bytes": "YUV4MPEG2 W2 H2 F25:1 Ip A1:1 C420 XYSCSS=420MPEG2 XCOLORRANGE=FULL\n",
+      "expect": {
+        "width": 2,
+        "height": 2,
+        "colorspace": "C420",
+        "bit_depth": 8,
+        "bytes_per_sample": 1,
+        "plane_sizes_bytes": [
+          4,
+          1,
+          1
+        ],
+        "plane_dims_samples": [
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "frames": 1
+      },
+      "payload_first_bytes_hex": "00070e15",
+      "sha256": "16bf09afe923ebe4382df32699eb65087dcfe967ff8b5ba2f29db66381d901e5",
+      "size_bytes": 80,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/frame_params_2x2_2f.y4m",
+      "kind": "valid",
+      "description": "Frame 0 carries FRAME-header params 'Xtag=1', frame 1 bare; reader must expose raw frame params without per-frame heap alloc",
+      "header_bytes": "YUV4MPEG2 W2 H2 F25:1 Ip A1:1 C420\n",
+      "expect": {
+        "width": 2,
+        "height": 2,
+        "colorspace": "C420",
+        "bit_depth": 8,
+        "bytes_per_sample": 1,
+        "plane_sizes_bytes": [
+          4,
+          1,
+          1
+        ],
+        "plane_dims_samples": [
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "frames": 2
+      },
+      "payload_first_bytes_hex": "00070e15",
+      "sha256": "446f79a9d3292660f1ac5519d251be755a84e52e6b358f1568cd5198cd47a3b3",
+      "size_bytes": 66,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/aspect_16x11_2x2.y4m",
+      "kind": "valid",
+      "description": "Non-square pixel aspect ratio must survive round-trip",
+      "header_bytes": "YUV4MPEG2 W2 H2 F25:1 Ip A16:11 C420\n",
+      "expect": {
+        "width": 2,
+        "height": 2,
+        "colorspace": "C420",
+        "bit_depth": 8,
+        "bytes_per_sample": 1,
+        "plane_sizes_bytes": [
+          4,
+          1,
+          1
+        ],
+        "plane_dims_samples": [
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "frames": 1
+      },
+      "payload_first_bytes_hex": "00070e15",
+      "sha256": "e8ad12091773253708e91743f7472b8feae38fef1de0ce5dfe7cac8ffc9a9a57",
+      "size_bytes": 49,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/zero_frames_header_only.y4m",
+      "kind": "valid",
+      "description": "Stream header then clean EOF: zero frames is valid; read_frame reports end-of-stream, not a parse error",
+      "header_bytes": "YUV4MPEG2 W2 H2 F25:1 Ip A1:1 C420\n",
+      "expect": {
+        "width": 2,
+        "height": 2,
+        "colorspace": "C420",
+        "bit_depth": 8,
+        "bytes_per_sample": 1,
+        "plane_sizes_bytes": [
+          4,
+          1,
+          1
+        ],
+        "plane_dims_samples": [
+          [
+            2,
+            2
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "frames": 0
+      },
+      "payload_first_bytes_hex": null,
+      "sha256": "493a6bbf38c16f292fa927ac070c048084d5b69de56935b6feaa37a974f2108b",
+      "size_bytes": 35,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/malformed/bad_magic.y4m",
+      "kind": "malformed",
+      "description": "Wrong stream magic",
+      "expect": {
+        "error": "parse",
+        "must_not": "panic"
+      },
+      "sha256": "930f85de9b4e9f8877905b7eab3924cf332011971bbe52ecc24978cb98f5548f",
+      "size_bytes": 34
+    },
+    {
+      "file": "fixtures/malformed/empty.y4m",
+      "kind": "malformed",
+      "description": "Empty input",
+      "expect": {
+        "error": "eof",
+        "must_not": "panic"
+      },
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "file": "fixtures/malformed/magic_only_no_lf.y4m",
+      "kind": "malformed",
+      "description": "EOF inside stream header before 0x0A terminator",
+      "expect": {
+        "error": "eof",
+        "must_not": "panic"
+      },
+      "sha256": "b343fe7f3a02bef8a2d346273552bd4e03b9262f2c4237473ab083798577a8ec",
+      "size_bytes": 15
+    },
+    {
+      "file": "fixtures/malformed/missing_width.y4m",
+      "kind": "malformed",
+      "description": "W tag absent",
+      "expect": {
+        "error": "parse",
+        "must_not": "panic"
+      },
+      "sha256": "700ee3fd5eb27873a6f08a6e4e0a4d5ee9d3145d21323e43c8eee48964920837",
+      "size_bytes": 36
+    },
+    {
+      "file": "fixtures/malformed/zero_dims.y4m",
+      "kind": "malformed",
+      "description": "Zero width/height",
+      "expect": {
+        "error": "parse",
+        "must_not": "panic"
+      },
+      "sha256": "e010315f4e540a82770400a60e0da4ca85992e0f735f5d08657069aa61c14aa9",
+      "size_bytes": 33
+    },
+    {
+      "file": "fixtures/malformed/nonnumeric_width.y4m",
+      "kind": "malformed",
+      "description": "Non-numeric W value",
+      "expect": {
+        "error": "parse",
+        "must_not": "panic"
+      },
+      "sha256": "e06b31e6789e641bebf3a82163aaecfaeaf7f788c480d44b1a63f6da2fb51102",
+      "size_bytes": 41
+    },
+    {
+      "file": "fixtures/malformed/bad_ratio.y4m",
+      "kind": "malformed",
+      "description": "Framerate missing ':den'",
+      "expect": {
+        "error": "parse",
+        "must_not": "panic"
+      },
+      "sha256": "f9058c010cfc15d9d21eb2e17776d964806d7042327817bc09e66d9ee8f2a84d",
+      "size_bytes": 37
+    },
+    {
+      "file": "fixtures/malformed/unknown_colorspace.y4m",
+      "kind": "malformed",
+      "description": "Unknown C tag must be a typed error, not a default",
+      "expect": {
+        "error": "unsupported",
+        "must_not": "panic"
+      },
+      "sha256": "e3a360941ee79e2f3331075679e30f4fe72968f16fffd8b867564053f5cac060",
+      "size_bytes": 39
+    },
+    {
+      "file": "fixtures/malformed/overflow_dims.y4m",
+      "kind": "malformed",
+      "description": "W*H*bps overflows/exceeds frame budget: checked math, typed error",
+      "expect": {
+        "error": "limits",
+        "must_not": "panic"
+      },
+      "sha256": "e9a6e2666ef8efa0345a1647f23fe4e3344b6368d622e67b5aa13fad757b3e82",
+      "size_bytes": 45
+    },
+    {
+      "file": "fixtures/malformed/huge_number.y4m",
+      "kind": "malformed",
+      "description": "Integer too large to parse",
+      "expect": {
+        "error": "parse",
+        "must_not": "panic"
+      },
+      "sha256": "bba8b444e925b589d059c7f83242b61d6c5a17aabf75c31404625a35b27c2137",
+      "size_bytes": 49
+    },
+    {
+      "file": "fixtures/malformed/bad_frame_magic.y4m",
+      "kind": "malformed",
+      "description": "Frame magic corrupt",
+      "expect": {
+        "error": "parse",
+        "must_not": "panic"
+      },
+      "sha256": "10657c7a1cf60f596a6d50b0fa9b2247e229eddb34fadd2f35cb3d05093eb2aa",
+      "size_bytes": 39
+    },
+    {
+      "file": "fixtures/malformed/frame_no_sep.y4m",
+      "kind": "malformed",
+      "description": "FRAME params without leading space separator",
+      "expect": {
+        "error": "parse",
+        "must_not": "panic"
+      },
+      "sha256": "f69eff3206d004734dc9f9d1dcb0b8883b2a816513b9b3bf6d54e081358eae13",
+      "size_bytes": 43
+    },
+    {
+      "file": "fixtures/malformed/truncated_frame.y4m",
+      "kind": "malformed",
+      "description": "EOF mid-payload (3 of 6 bytes): truncation error, not silent success",
+      "expect": {
+        "error": "truncated",
+        "must_not": "panic"
+      },
+      "sha256": "13c480f4c210e80353772b89f967354f1f0521a8b4521c7624949e709fec3de5",
+      "size_bytes": 36
+    },
+    {
+      "file": "fixtures/malformed/truncated_second_frame.y4m",
+      "kind": "malformed",
+      "description": "First frame valid, second truncated: frame 0 must decode, frame 1 must error",
+      "expect": {
+        "error": "truncated",
+        "must_not": "panic"
+      },
+      "sha256": "20da087c237cbd53d8c631a94e799125495805986d03a535351d5f9c502a2497",
+      "size_bytes": 47
+    },
+    {
+      "file": "fixtures/malformed/oversize_header.y4m",
+      "kind": "malformed",
+      "description": "Stream header exceeds bounded maximum: bounded read, typed error",
+      "expect": {
+        "error": "limits",
+        "must_not": "panic"
+      },
+      "sha256": "74a9c4d8d58196e40d198c6764e339f4cb5d7d75016e2a6a26d330f8f73cf9bc",
+      "size_bytes": 8221
+    },
+    {
+      "file": "fixtures/malformed/nul_garbage.y4m",
+      "kind": "malformed",
+      "description": "Binary garbage",
+      "expect": {
+        "error": "parse",
+        "must_not": "panic"
+      },
+      "sha256": "f5a5fd42d16a20302798ef6ed309979b43003d2320d9f0e8ea9831a92759fb4b",
+      "size_bytes": 64
+    },
+    {
+      "file": "fixtures/ff_testsrc2_c420_32x18_2f.y4m",
+      "kind": "valid",
+      "description": "Real-world reference emitted by ffmpeg 8.1.2 (C420); includes XYSCSS extension tag",
+      "generator_command": "ffmpeg -f lavfi -i testsrc2=size=32x18:rate=30 -frames:v 2 -pix_fmt yuv420p -f yuv4mpegpipe <out>",
+      "expect": {
+        "width": 32,
+        "height": 18,
+        "colorspace": "C420",
+        "bit_depth": 8,
+        "bytes_per_sample": 1,
+        "plane_sizes_bytes": [
+          576,
+          144,
+          144
+        ],
+        "frames": 2
+      },
+      "sha256": "020664de52b11feb203bb1cbe0e33bb5f0d4df799d3e749d27255a0087d72acd",
+      "size_bytes": 1796,
+      "roundtrip": "byte-exact"
+    },
+    {
+      "file": "fixtures/ff_testsrc2_c420p10_32x18_2f.y4m",
+      "kind": "valid",
+      "description": "Real-world reference emitted by ffmpeg 8.1.2 (C420p10); includes XYSCSS extension tag",
+      "generator_command": "ffmpeg -f lavfi -i testsrc2=size=32x18:rate=30 -frames:v 2 -pix_fmt yuv420p10le -strict -1 -f yuv4mpegpipe <out>",
+      "expect": {
+        "width": 32,
+        "height": 18,
+        "colorspace": "C420p10",
+        "bit_depth": 10,
+        "bytes_per_sample": 2,
+        "plane_sizes_bytes": [
+          1152,
+          288,
+          288
+        ],
+        "frames": 2
+      },
+      "sha256": "371f2f14bb2a616ce0fd1ff8cdbc0f7a5db729dc69c82cc7e4b8053204f6da72",
+      "size_bytes": 3522,
+      "roundtrip": "byte-exact"
+    }
+  ],
+  "validation": {
+    "tool": "ffmpeg version 8.1.2",
+    "decode_check": "ffmpeg -nostdin -v error -i <fixture> -f md5 -  (all 19 hand-built valid fixtures decode without error; odd-dim c420_odd_5x5_1f also accepted by ffmpeg with ceil chroma)",
+    "endianness_check": "ffprobe reports pix_fmt=yuv420p10le for c420p10_2x2_2f_LE.y4m: C<sub>p<depth> wire format is little-endian"
+  }
+}

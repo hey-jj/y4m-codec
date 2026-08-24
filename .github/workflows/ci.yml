@@ -1,0 +1,115 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  stable:
+    name: stable (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+      - run: cargo build --locked
+      - run: cargo test --locked
+      - run: cargo test --locked --release
+      - name: zero-alloc gate, single-threaded
+        run: cargo test --locked --test zero_alloc -- --test-threads=1
+      - run: cargo clippy --all-targets --locked -- -D warnings
+      - run: cargo fmt --check
+      - run: cargo doc --no-deps --locked
+        env:
+          RUSTDOCFLAGS: -D warnings
+      - name: packaged crate tests clean as packaged
+        shell: bash
+        run: |
+          cargo package --locked --list
+          cargo package --locked
+          tar -xzf target/package/y4m-codec-*.crate -C target/package
+          cd target/package/y4m-codec-*/
+          cargo test --offline
+
+  msrv:
+    # The declared rust-version is a promise about the shipped library, so
+    # the floor builds the library and runs the doctests on a copy with
+    # [dev-dependencies] removed. That changes the resolved set, so
+    # --locked stays off here and on the stable job only.
+    name: msrv 1.70 (lib, doctests, external consumer)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.70.0
+      - name: strip dev-dependencies into a scratch copy
+        run: |
+          mkdir -p /tmp/msrv
+          cp -r . /tmp/msrv/crate
+          python3 - <<'EOF'
+          import re
+          path = "/tmp/msrv/crate/Cargo.toml"
+          text = open(path).read()
+          text = re.sub(r"(?ms)^\[dev-dependencies\].*?(?=^\[|\Z)", "", text)
+          open(path, "w").write(text)
+          EOF
+          rm -f /tmp/msrv/crate/Cargo.lock
+      - run: cargo build --lib --manifest-path /tmp/msrv/crate/Cargo.toml
+      - run: cargo test --doc --manifest-path /tmp/msrv/crate/Cargo.toml
+      - name: external consumer at the floor
+        working-directory: ci/msrv-consumer
+        run: cargo run
+
+  big-endian:
+    # Gate (b): the full suite executes on big-endian targets under qemu.
+    # The summary step prints the executed test count from the libtest
+    # output, which is the evidence the gate asks for.
+    name: cross test (${{ matrix.target }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [s390x-unknown-linux-gnu, powerpc64-unknown-linux-gnu]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: taiki-e/install-action@cross
+      - name: full suite
+        run: cross test --locked --target ${{ matrix.target }} 2>&1 | tee cross-test.log
+      - name: zero-alloc gate, single-threaded
+        run: cross test --locked --target ${{ matrix.target }} --test zero_alloc -- --test-threads=1 2>&1 | tee -a cross-test.log
+      - name: executed test count
+        run: |
+          grep -E '^test result:' cross-test.log
+          passed=$(grep -E '^test result:' cross-test.log | sed -E 's/.* ([0-9]+) passed.*/\1/' | paste -sd+ - | bc)
+          echo "${{ matrix.target }}: $passed tests passed"
+          test "$passed" -gt 0
+
+  fuzz:
+    name: fuzz decode (time budget)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - uses: taiki-e/install-action@cargo-fuzz
+      - run: cargo fuzz build decode
+      - name: seed the corpus with the test fixtures
+        run: |
+          mkdir -p fuzz/corpus/decode
+          cp tests/fixtures/*.y4m tests/fixtures/malformed/*.y4m fuzz/corpus/decode/
+      - run: cargo fuzz run decode -- -max_total_time=120 -rss_limit_mb=512
+      - name: corpus size
+        run: ls fuzz/corpus/decode | wc -l
+
+  bench:
+    name: throughput floor (1080p C420 / C420p10)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo bench --locked --bench throughput

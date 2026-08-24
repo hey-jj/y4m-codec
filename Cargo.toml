@@ -1,0 +1,27 @@
+[package]
+name = "y4m-codec"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.70"
+authors = ["Justin Jones <hey.jones@icloud.com>"]
+license = "MIT"
+description = "Streaming reader and writer for the YUV4MPEG2 (.y4m) uncompressed video format, with borrowed frame planes and little-endian high-bit-depth samples"
+keywords = ["y4m", "yuv4mpeg2", "video", "yuv", "parser"]
+categories = ["multimedia::video", "multimedia::encoding", "parser-implementations"]
+readme = "README.md"
+repository = "https://github.com/hey-jj/y4m-codec"
+documentation = "https://docs.rs/y4m-codec"
+# The package carries every file its tests read: tests/fixtures/ and
+# tests/conformance-vectors.json ship. Out of the tarball: the cargo-fuzz
+# crate and its corpus, the CI-only MSRV consumer crate, and workflow config.
+exclude = ["fuzz/", "ci/", ".github/"]
+
+[dependencies]
+
+[dev-dependencies]
+criterion = { version = "0.5", default-features = false, features = ["cargo_bench_support"] }
+serde_json = "1"
+
+[[bench]]
+name = "throughput"
+harness = false
